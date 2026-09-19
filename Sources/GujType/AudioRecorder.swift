@@ -11,6 +11,8 @@ final class AudioRecorder {
     private var streamingConverter: AVAudioConverter?
     private var streamFormat: AVAudioFormat?
     private var onPCMChunk: ((Data) -> Void)?
+    private var pendingPCM = Data()
+    private let audioLock = NSLock()
 
     func start(onPCMChunk: ((Data) -> Void)? = nil) throws {
         let input = engine.inputNode
@@ -22,11 +24,15 @@ final class AudioRecorder {
             streamFormat = target
         }
         let destination = FileManager.default.temporaryDirectory.appendingPathComponent("gujtype-\(UUID().uuidString).caf")
-        file = try AVAudioFile(forWriting: destination, settings: format.settings)
+        // Live dictation needs only a bounded in-memory packet buffer.
+        file = onPCMChunk == nil ? try AVAudioFile(forWriting: destination, settings: format.settings) : nil
+        pendingPCM.removeAll()
         url = destination
         input.installTap(onBus: 0, bufferSize: 2_048, format: format) { [weak self] buffer, _ in
-            try? self?.file?.write(from: buffer)
-            self?.stream(buffer)
+            guard let self else { return }
+            self.audioLock.lock(); defer { self.audioLock.unlock() }
+            try? self.file?.write(from: buffer)
+            self.stream(buffer)
         }
         engine.prepare()
         try engine.start()
@@ -35,6 +41,8 @@ final class AudioRecorder {
         guard let url else { throw RecordingError.notRecording }
         engine.inputNode.removeTap(onBus: 0)
         engine.stop()
+        audioLock.lock(); defer { audioLock.unlock() }
+        if !pendingPCM.isEmpty { onPCMChunk?(pendingPCM); pendingPCM.removeAll() }
         file = nil; self.url = nil; streamingConverter = nil; streamFormat = nil; onPCMChunk = nil
         return url
     }
@@ -51,6 +59,10 @@ final class AudioRecorder {
             return buffer
         }
         guard error == nil, let samples = output.int16ChannelData, output.frameLength > 0 else { return }
-        callback(Data(bytes: samples[0], count: Int(output.frameLength) * MemoryLayout<Int16>.size))
+        pendingPCM.append(Data(bytes: samples[0], count: Int(output.frameLength) * MemoryLayout<Int16>.size))
+        while pendingPCM.count >= 3200 {
+            callback(Data(pendingPCM.prefix(3200)))
+            pendingPCM.removeFirst(3200)
+        }
     }
 }

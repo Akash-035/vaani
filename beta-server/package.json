@@ -7,5 +7,10 @@
     "start": "node src/server.mjs",
     "test": "node --test test/*.test.mjs"
   },
-  "engines": { "node": ">=24.0.0" }
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
 }

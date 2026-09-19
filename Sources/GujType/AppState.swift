@@ -78,6 +78,7 @@ final class AppState: ObservableObject {
     let inserter = FocusedTextInserter()
     private var hotkeyMonitor: HotkeyMonitor?
     private var recordingStartedAt: Date?
+    private var recordingOutputMode: OutputMode?
     private var liveStreamer: LiveSarvamStreaming?
     private var liveInsertedText = ""
     private var liveCommittedText = ""
@@ -153,23 +154,27 @@ final class AppState: ObservableObject {
     }
 
     func startRecording() {
-        guard !isRecording else { return }
+        guard !isRecording, !isProcessing else { return }
         guard microphonePermission == .granted else {
             status = "Allow microphone access first"
             if microphonePermission == .unknown { requestMicrophone() }
             return
         }
         do {
+            recordingOutputMode = outputMode
             // Whisper runs only after release, so it has no partial text to display. Always
             // clear the previous session first; the overlay will correctly say Listening…
             // instead of showing a stale Sarvam result during local English recording.
             liveTranscript = ""
-            if useLivePreview && false {
+            if useLivePreview && usesCloudForCurrentMode {
                 liveInsertedText = ""
                 liveCommittedText = ""
-                liveComposition = typeWhileSpeaking ? LiveTextComposition.begin() : nil
-                let streamer = LiveSarvamStreaming { [weak self] text in self?.acceptLiveTranscript(text) }
-                try streamer.start(outputMode: outputMode)
+                liveComposition = LiveTextComposition.begin()
+                let streamer = LiveSarvamStreaming(onTranscript: { [weak self] text in self?.acceptLiveTranscript(text) }, onError: { [weak self] error in
+                    self?.status = error
+                    Task { await self?.stopAndTranscribe() }
+                })
+                try streamer.start(outputMode: outputMode, endpoint: betaAPIEndpoint)
                 liveStreamer = streamer
                 try recorder.start { [weak streamer] chunk in streamer?.send(chunk) }
             } else {
@@ -179,8 +184,8 @@ final class AppState: ObservableObject {
             isProcessing = false
             liveOverlay.show(appState: self)
             recordingStartedAt = Date()
-            status = "Recording… release \(shortcut.displayName) to transcribe"
-        } catch { status = "Could not start microphone: \(error.localizedDescription)" }
+            status = liveStreamer == nil ? "Recording… release \(shortcut.displayName) to transcribe" : "Live dictation — speak now (2-minute limit)"
+        } catch { liveStreamer?.cancel(); liveStreamer = nil; status = "Could not start microphone: \(error.localizedDescription)" }
     }
 
     func stopAndTranscribe() async {
@@ -190,21 +195,24 @@ final class AppState: ObservableObject {
         let recordingDuration = max(0, Date().timeIntervalSince(recordingStartedAt ?? Date()))
         recordingStartedAt = nil
         let liveRun = liveStreamer != nil
+        let outputMode = recordingOutputMode ?? self.outputMode
+        defer {
+            liveStreamer?.cancel(); liveStreamer = nil; liveComposition = nil
+            recordingOutputMode = nil; isProcessing = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+                guard let self, !self.isRecording, !self.isProcessing else { return }
+                self.liveOverlay.hide()
+            }
+        }
         status = liveRun ? "Finalizing live transcript…" : (usesCloudForCurrentMode ? "Transcribing with Vaani Cloud…" : "Transcribing locally…")
         do {
             let audioURL = try recorder.stop()
+            defer { try? FileManager.default.removeItem(at: audioURL) }
             let transcript: Transcript
             if let liveStreamer {
-                let finalText = await liveStreamer.finish()
+                let finalText = try await liveStreamer.finish()
                 self.liveStreamer = nil
-                if finalText.isEmpty {
-                    // A streaming connection can be interrupted by a network/VAD issue. Never
-                    // discard the already-recorded audio: restore the stable REST path instead.
-                    status = "Live preview unavailable — using completed transcription…"
-                    transcript = try await VaaniBetaTranscriber().transcribe(audioAt: audioURL, outputMode: outputMode, endpoint: betaAPIEndpoint)
-                } else {
-                    transcript = Transcript(text: finalText, language: outputMode.whisperLanguage)
-                }
+                transcript = Transcript(text: finalText, language: outputMode.whisperLanguage)
             } else if usesCloudForCurrentMode {
                 transcript = try await VaaniBetaTranscriber().transcribe(audioAt: audioURL, outputMode: outputMode, endpoint: betaAPIEndpoint)
             } else {
@@ -223,6 +231,8 @@ final class AppState: ObservableObject {
             let method: String
             if liveRun, let composition = liveComposition, composition.replace(with: output) {
                 method = "live Accessibility composition"
+            } else if liveRun {
+                method = "live preview — copy from History"
             } else {
                 method = inserter.insert(output)
             }
@@ -232,14 +242,13 @@ final class AppState: ObservableObject {
                 provider: activeProviderName, date: Date(), duration: recordingDuration
             ), at: 0)
             if history.count > 100 { history.removeLast(history.count - 100) }
-            status = "Inserted via \(usesCloudForCurrentMode ? "Vaani Cloud" : "local Whisper") using \(method)"
+            status = method == "live preview — copy from History" ? "Live dictation saved — copy from History" : "Inserted via \(usesCloudForCurrentMode ? "Vaani Cloud" : "local Whisper") using \(method)"
         } catch {
+            if liveRun { lastOutput = liveTranscript }
             status = error.localizedDescription
         }
         // Keep the final result visible briefly so the bottom bar feels conclusive,
         // rather than vanishing the moment the key is released.
-        isProcessing = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [liveOverlay] in liveOverlay.hide() }
     }
 
     func startBetaSession(inviteCode: String) async {
@@ -275,11 +284,15 @@ final class AppState: ObservableObject {
     }
 
     private func acceptLiveTranscript(_ rawText: String) {
+        let outputMode = recordingOutputMode ?? self.outputMode
         guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         let display = OutputFormatter.format(Transcript(text: rawText, language: outputMode.whisperLanguage), mode: outputMode)
         guard !display.isEmpty else { return }
         liveTranscript = display
-        _ = liveComposition?.replace(with: display)
+        if let composition = liveComposition, !composition.replace(with: display) {
+            liveComposition = nil
+            status = "Live preview only — field or cursor changed. Copy the result from History."
+        }
     }
 
     func copyToClipboard(_ text: String) {

@@ -3,6 +3,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import http from 'node:http';
+import { attachRealtime } from './realtime.mjs';
 
 const port = numberEnv('PORT', 8080);
 const maxAudioBytes = numberEnv('MAX_AUDIO_BYTES', 10 * 1024 * 1024);
@@ -113,5 +114,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 server.requestTimeout = 120_000;
+attachRealtime(server, { subjectFrom, limited, countToday, dailyLimit, record, sarvamKey, allowedModes });
 server.headersTimeout = 15_000;
 server.listen(port, '0.0.0.0', () => console.log(`Vaani beta API listening on 0.0.0.0:${port}`));
