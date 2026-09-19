@@ -13,14 +13,13 @@ final class LiveOverlayController {
         let panel: NSPanel
         if let existing = self.panel { panel = existing }
         else {
-            panel = NSPanel(contentRect: .init(x: 0, y: 0, width: width, height: compactHeight), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
+            panel = DictationPanel(contentRect: .init(x: 0, y: 0, width: width, height: compactHeight), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
             panel.isOpaque = false
             panel.backgroundColor = .clear
             panel.hasShadow = true
             panel.level = .statusBar
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .ignoresCycle]
             panel.hidesOnDeactivate = false
-            panel.becomesKeyOnlyIfNeeded = true
             self.panel = panel
         }
         screen = NSScreen.main ?? NSScreen.screens.first
@@ -44,6 +43,13 @@ final class LiveOverlayController {
             panel.animator().setFrame(frame, display: true)
         }
     }
+}
+
+/// The overlay must never become key: a global push-to-talk release must continue
+/// reaching the application that the user was dictating into.
+private final class DictationPanel: NSPanel {
+    override var canBecomeKey: Bool { false }
+    override var canBecomeMain: Bool { false }
 }
 
 private struct LiveOverlayView: View {
