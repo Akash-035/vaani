@@ -14,7 +14,7 @@ enum OutputMode: String, CaseIterable, Identifiable {
 
 enum TranscriptionProvider: String, CaseIterable, Identifiable {
     case local = "Local on this Mac"
-    case sarvam = "Sarvam Saaras"
+    case beta = "Vaani Cloud (beta)"
     var id: String { rawValue }
 }
 
@@ -55,11 +55,8 @@ final class AppState: ObservableObject {
     @Published var status = "Ready"
     @Published var lastTranscript = ""
     @Published var lastOutput = ""
-    @Published var useCloudCleanup: Bool {
-        didSet { UserDefaults.standard.set(useCloudCleanup, forKey: "useCloudCleanup") }
-    }
-    @Published private(set) var hasOpenAIKey = false
-    @Published private(set) var hasSarvamKey = false
+    @Published var betaAPIEndpoint: String { didSet { UserDefaults.standard.set(betaAPIEndpoint, forKey: "betaAPIEndpoint") } }
+    @Published private(set) var betaSessionExpiresAt: Date?
     @Published var useLivePreview: Bool {
         didSet { UserDefaults.standard.set(useLivePreview, forKey: "useLivePreview") }
     }
@@ -88,12 +85,12 @@ final class AppState: ObservableObject {
     private let liveOverlay = LiveOverlayController()
 
     /// English Whisper is already strong locally, so cloud STT is reserved for Indic modes.
-    var usesSarvamForCurrentMode: Bool {
-        transcriptionProvider == .sarvam && outputMode != .english
+    var usesCloudForCurrentMode: Bool {
+        transcriptionProvider == .beta
     }
 
     var activeProviderName: String {
-        usesSarvamForCurrentMode ? "Sarvam Saaras" : "Local Whisper"
+        usesCloudForCurrentMode ? "Vaani Cloud (beta)" : "Local Whisper"
     }
 
     init() {
@@ -101,9 +98,8 @@ final class AppState: ObservableObject {
         outputMode = OutputMode(rawValue: saved ?? "") ?? .gujarati
         let savedProvider = UserDefaults.standard.string(forKey: "transcriptionProvider")
         transcriptionProvider = TranscriptionProvider(rawValue: savedProvider ?? "") ?? .local
-        useCloudCleanup = UserDefaults.standard.bool(forKey: "useCloudCleanup")
-        hasOpenAIKey = KeychainStore.read(service: "GujType", account: "openai-api-key") != nil
-        hasSarvamKey = KeychainStore.read(service: "GujType", account: "sarvam-api-key") != nil
+        betaAPIEndpoint = UserDefaults.standard.string(forKey: "betaAPIEndpoint") ?? ""
+        betaSessionExpiresAt = UserDefaults.standard.object(forKey: "betaSessionExpiresAt") as? Date
         useLivePreview = UserDefaults.standard.bool(forKey: "useLivePreview")
         typeWhileSpeaking = UserDefaults.standard.bool(forKey: "typeWhileSpeaking")
         personalDictionary = UserDefaults.standard.stringArray(forKey: "personalDictionary") ?? []
@@ -168,7 +164,7 @@ final class AppState: ObservableObject {
             // clear the previous session first; the overlay will correctly say Listening…
             // instead of showing a stale Sarvam result during local English recording.
             liveTranscript = ""
-            if useLivePreview && usesSarvamForCurrentMode {
+            if useLivePreview && false {
                 liveInsertedText = ""
                 liveCommittedText = ""
                 liveComposition = typeWhileSpeaking ? LiveTextComposition.begin() : nil
@@ -194,7 +190,7 @@ final class AppState: ObservableObject {
         let recordingDuration = max(0, Date().timeIntervalSince(recordingStartedAt ?? Date()))
         recordingStartedAt = nil
         let liveRun = liveStreamer != nil
-        status = liveRun ? "Finalizing live transcript…" : (usesSarvamForCurrentMode ? "Transcribing with Sarvam…" : "Transcribing locally…")
+        status = liveRun ? "Finalizing live transcript…" : (usesCloudForCurrentMode ? "Transcribing with Vaani Cloud…" : "Transcribing locally…")
         do {
             let audioURL = try recorder.stop()
             let transcript: Transcript
@@ -205,35 +201,23 @@ final class AppState: ObservableObject {
                     // A streaming connection can be interrupted by a network/VAD issue. Never
                     // discard the already-recorded audio: restore the stable REST path instead.
                     status = "Live preview unavailable — using completed transcription…"
-                    transcript = try await SarvamTranscriber().transcribe(
-                        audioAt: audioURL, outputMode: outputMode, keyterms: personalDictionary
-                    )
+                    transcript = try await VaaniBetaTranscriber().transcribe(audioAt: audioURL, outputMode: outputMode, endpoint: betaAPIEndpoint)
                 } else {
                     transcript = Transcript(text: finalText, language: outputMode.whisperLanguage)
                 }
-            } else if usesSarvamForCurrentMode {
-                transcript = try await SarvamTranscriber().transcribe(
-                    audioAt: audioURL, outputMode: outputMode, keyterms: personalDictionary
-                )
+            } else if usesCloudForCurrentMode {
+                transcript = try await VaaniBetaTranscriber().transcribe(audioAt: audioURL, outputMode: outputMode, endpoint: betaAPIEndpoint)
             } else {
                 let transcriber = outputMode.usesGujaratiEngine ? gujaratiTranscriber : whisperTranscriber
                 transcript = try await transcriber.transcribe(audioAt: audioURL, languageHint: outputMode.whisperLanguage)
             }
             lastTranscript = transcript.text
-            var output = usesSarvamForCurrentMode
+            var output = usesCloudForCurrentMode
                 ? transcript.text
                 : OutputFormatter.format(transcript, mode: outputMode)
             // Sarvam realtime partial/final events can be native script even for a translit
             // request. Format streamed text locally so the preview always matches the picker.
             if liveRun { output = OutputFormatter.format(transcript, mode: outputMode) }
-            if useCloudCleanup, hasOpenAIKey, !output.isEmpty {
-                status = "Cleaning transcript…"
-                do {
-                    output = try await OpenAICleaner().clean(rawGujarati: transcript.text, preliminary: output, mode: outputMode)
-                } catch {
-                    status = "Cloud cleanup unavailable; using local output"
-                }
-            }
             lastOutput = output
             guard !output.isEmpty else { status = "No speech detected"; return }
             let method: String
@@ -248,7 +232,7 @@ final class AppState: ObservableObject {
                 provider: activeProviderName, date: Date(), duration: recordingDuration
             ), at: 0)
             if history.count > 100 { history.removeLast(history.count - 100) }
-            status = "Inserted via \(usesSarvamForCurrentMode ? "Sarvam" : "local Whisper") using \(method)"
+            status = "Inserted via \(usesCloudForCurrentMode ? "Vaani Cloud" : "local Whisper") using \(method)"
         } catch {
             status = error.localizedDescription
         }
@@ -258,20 +242,15 @@ final class AppState: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [liveOverlay] in liveOverlay.hide() }
     }
 
-    func saveOpenAIKey(_ key: String) {
-        guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+    func startBetaSession(inviteCode: String) async {
+        guard !inviteCode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { status = "Enter your beta invite code"; return }
+        status = "Connecting to Vaani Cloud…"
         do {
-            try KeychainStore.save(key, service: "GujType", account: "openai-api-key")
-            hasOpenAIKey = true; status = "OpenAI API key saved in Keychain"
-        } catch { status = "Could not save API key: \(error.localizedDescription)" }
-    }
-
-    func saveSarvamKey(_ key: String) {
-        guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        do {
-            try KeychainStore.save(key, service: "GujType", account: "sarvam-api-key")
-            hasSarvamKey = true; status = "Sarvam API key saved in Keychain"
-        } catch { status = "Could not save Sarvam key: \(error.localizedDescription)" }
+            let expiry = try await VaaniBetaTranscriber().startSession(endpoint: betaAPIEndpoint, inviteCode: inviteCode)
+            betaSessionExpiresAt = expiry
+            UserDefaults.standard.set(expiry, forKey: "betaSessionExpiresAt")
+            status = "Vaani Cloud beta session ready"
+        } catch { status = error.localizedDescription }
     }
 
     func addDictionaryTerm(_ rawTerm: String) {

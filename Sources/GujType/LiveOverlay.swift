@@ -42,7 +42,7 @@ private struct LiveOverlayView: View {
             Text(app.isProcessing ? "Processing your input…" : (app.liveTranscript.isEmpty ? "Listening…" : app.liveTranscript))
                 .font(.system(size: 17, weight: .semibold)).lineLimit(1).truncationMode(.tail)
             Spacer()
-            Text(app.isProcessing ? "PROCESSING" : (app.usesSarvamForCurrentMode && app.useLivePreview ? "LIVE" : "RECORDING"))
+            Text(app.isProcessing ? "PROCESSING" : "RECORDING")
                 .font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.72))
         }
         .padding(.horizontal, 22).frame(maxWidth: .infinity, maxHeight: .infinity)
