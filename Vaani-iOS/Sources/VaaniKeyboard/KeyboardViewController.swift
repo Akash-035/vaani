@@ -166,28 +166,4 @@ final class KeyboardViewController: UIInputViewController {
     }
 }
 
-private enum KeyboardOutputMode: String, CaseIterable { case gujarati = "Gujarati", gujlish = "Gujlish", hindi = "Hindi", hinglish = "Hinglish", english = "English"
-    var languageCode: String { self == .gujarati || self == .gujlish ? "gu-IN" : self == .hindi || self == .hinglish ? "hi-IN" : "en-IN" }
-    var sarvamMode: String { self == .gujlish || self == .hinglish ? "translit" : "transcribe" }
-}
-
-private enum KeyboardError: LocalizedError { case message(String); var errorDescription: String? { if case .message(let text) = self { return text }; return nil } }
-
-private struct KeyboardSarvamClient {
-    private struct Response: Decodable { let transcript: String?; let text: String? }
-    func transcribe(url: URL, mode: KeyboardOutputMode, apiKey: String) async throws -> String {
-        guard !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw KeyboardError.message("Open Vaani and add your Sarvam API key first.") }
-        let boundary = "Vaani-\(UUID().uuidString)"
-        var request = URLRequest(url: URL(string: "https://api.sarvam.ai/speech-to-text")!)
-        request.httpMethod = "POST"; request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization"); request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        var body = Data()
-        func field(_ name: String, _ value: String) { body.append("--\(boundary)\r\nContent-Disposition: form-data; name=\"\(name)\"\r\n\r\n\(value)\r\n".data(using: .utf8)!) }
-        field("model", "saaras:v4"); field("language_code", mode.languageCode); field("mode", mode.sarvamMode)
-        body.append("--\(boundary)\r\nContent-Disposition: form-data; name=\"file\"; filename=\"recording.wav\"\r\nContent-Type: audio/wav\r\n\r\n".data(using: .utf8)!); body.append(try Data(contentsOf: url)); body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!); request.httpBody = body
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { throw KeyboardError.message("Sarvam could not transcribe this recording.") }
-        let decoded = try JSONDecoder().decode(Response.self, from: data)
-        guard let result = decoded.transcript ?? decoded.text, !result.isEmpty else { throw KeyboardError.message("No speech was recognized.") }
-        return result
-    }
-}
+private enum KeyboardOutputMode: String, CaseIterable { case gujarati = "Gujarati", gujlish = "Gujlish", hindi = "Hindi", hinglish = "Hinglish", english = "English" }

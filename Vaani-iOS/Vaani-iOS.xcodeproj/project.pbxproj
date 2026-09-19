@@ -12,11 +12,9 @@
 		9041566A2EECE89B7A3A7557 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */; };
 		9A7088C5152272942D429438 /* FlowSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C922715F1AED16CA72EFE71E /* FlowSession.swift */; };
 		AE88051A293450CE0635078B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773E093FB83BB30AEA47F653 /* ContentView.swift */; };
-		B6DA1718FB5ECE1D82E12A4B /* LiveSarvamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */; };
 		B923083D151B31829CC5E500 /* VaaniApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1B56F7C941CCE486A95497 /* VaaniApp.swift */; };
 		CFC615E1A895049ADAF22DC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 994DE1E3926B2846B277AD2C /* Assets.xcassets */; };
 		D68016BA2A9BAB9BA2406A0A /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA73178466500B6BC79B663 /* Models.swift */; };
-		D8D9E7148668D099194F3214 /* SarvamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */; };
 		E25C4F4E397458233A2B37C2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD0BA567DE5C497113710EA /* KeyboardViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,10 +44,8 @@
 
 /* Begin PBXFileReference section */
 		1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
-		3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSarvamClient.swift; sourceTree = "<group>"; };
 		3D663B4C66ECA5593213F145 /* VaaniKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VaaniKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		498DEC1D7EA4B6EC186801B9 /* Vaani.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vaani.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SarvamClient.swift; sourceTree = "<group>"; };
 		773E093FB83BB30AEA47F653 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77BC03395B1C52374AAEF1E9 /* Vaani.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vaani.entitlements; sourceTree = "<group>"; };
 		994DE1E3926B2846B277AD2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,9 +65,7 @@
 				1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */,
 				773E093FB83BB30AEA47F653 /* ContentView.swift */,
 				C922715F1AED16CA72EFE71E /* FlowSession.swift */,
-				3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */,
 				BAA73178466500B6BC79B663 /* Models.swift */,
-				5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */,
 				77BC03395B1C52374AAEF1E9 /* Vaani.entitlements */,
 				BE1B56F7C941CCE486A95497 /* VaaniApp.swift */,
 				BB361CCF599FA09C2F7E4E3C /* VaaniBetaClient.swift */,
@@ -212,9 +206,7 @@
 				9041566A2EECE89B7A3A7557 /* AudioRecorder.swift in Sources */,
 				AE88051A293450CE0635078B /* ContentView.swift in Sources */,
 				9A7088C5152272942D429438 /* FlowSession.swift in Sources */,
-				B6DA1718FB5ECE1D82E12A4B /* LiveSarvamClient.swift in Sources */,
 				D68016BA2A9BAB9BA2406A0A /* Models.swift in Sources */,
-				D8D9E7148668D099194F3214 /* SarvamClient.swift in Sources */,
 				B923083D151B31829CC5E500 /* VaaniApp.swift in Sources */,
 				2A49CAFE694278C8D9610ECB /* VaaniBetaClient.swift in Sources */,
 			);

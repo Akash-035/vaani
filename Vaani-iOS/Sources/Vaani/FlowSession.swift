@@ -103,7 +103,8 @@ final class FlowSession: NSObject, ObservableObject {
             defer { try? FileManager.default.removeItem(at: url) }
             let rawMode = defaults.string(forKey: "keyboardOutputMode") ?? OutputMode.gujlish.rawValue
             let mode = OutputMode(rawValue: rawMode) ?? .gujlish
-            let text = try await SarvamClient().transcribe(audioURL: url, mode: mode, apiKey: defaults.string(forKey: "sarvamAPIKey") ?? "")
+            let endpoint = UserDefaults.standard.string(forKey: "betaAPIEndpoint") ?? ""
+            let text = try await VaaniBetaClient().transcribe(audioURL: url, mode: mode, endpoint: endpoint)
             complete(requestID: requestID, result: text, error: nil)
         } catch { complete(requestID: requestID, result: nil, error: error.localizedDescription) }
     }

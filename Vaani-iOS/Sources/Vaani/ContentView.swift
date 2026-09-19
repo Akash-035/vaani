@@ -33,10 +33,10 @@ struct ContentView: View {
                             .pickerStyle(.menu).tint(.white).frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 15).padding(.vertical, 11)
                             .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
-                        Button { errorMessage = "Flow Session is not part of the cloud beta yet." } label: {
+                        Button { Task { do { try await flowSession.startTimed() } catch { errorMessage = error.localizedDescription } } } label: {
                             Label(flowSession.isEnabled ? "Flow Session Active — 5 min" : "Start Flow Session — 5 min", systemImage: flowSession.isEnabled ? "waveform.circle.fill" : "waveform.circle")
                                 .frame(maxWidth: .infinity).padding(.vertical, 4)
-                        }.buttonStyle(.bordered).tint(flowSession.isEnabled ? .green : .white).disabled(flowSession.isEnabled)
+                        }.buttonStyle(.bordered).tint(flowSession.isEnabled ? .green : .white).disabled(flowSession.isEnabled || VaaniBetaKeychain.read() == nil)
                         Text(flowSession.status).font(.footnote).foregroundStyle(.white.opacity(0.66)).multilineTextAlignment(.center)
                         if flowSession.isEnabled {
                             Text("Mic active · \(flowSession.remainingSeconds / 60):\(String(format: "%02d", flowSession.remainingSeconds % 60)) remaining").monospacedDigit()
@@ -69,6 +69,7 @@ struct ContentView: View {
                 guard url.scheme == "vaani", url.host == "dictate" else { return }
                 Task {
                     do {
+                        guard VaaniBetaKeychain.read() != nil else { throw VaaniError.message("Connect to Vaani Cloud beta in Settings first.") }
                         if !flowSession.isEnabled { try await flowSession.startTimed() }
                         sharedDefaults.set(UUID().uuidString, forKey: "flowRequestID")
                         sharedDefaults.set("start", forKey: "flowCommand")

@@ -17,14 +17,15 @@ enum VaaniBetaError: LocalizedError {
 enum VaaniBetaKeychain {
     static let service = "com.vaani.ios"
     static let account = "beta-access-token"
+    static let accessGroup = "FYV9PR66S6.com.vaani.shared"
     static func read() -> String? {
         var result: CFTypeRef?
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account, kSecReturnData as String: true]
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account, kSecAttrAccessGroup as String: accessGroup, kSecReturnData as String: true]
         guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess, let data = result as? Data else { return nil }
         return String(data: data, encoding: .utf8)
     }
     static func save(_ value: String) throws {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account, kSecAttrAccessGroup as String: accessGroup]
         SecItemDelete(query as CFDictionary)
         var item = query; item[kSecValueData as String] = Data(value.utf8)
         guard SecItemAdd(item as CFDictionary, nil) == errSecSuccess else { throw VaaniError.message("Could not securely save the beta session.") }
