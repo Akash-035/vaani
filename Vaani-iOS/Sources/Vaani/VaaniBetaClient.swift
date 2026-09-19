@@ -9,7 +9,7 @@ enum VaaniBetaError: LocalizedError {
         case .missingSession: return "Connect with your beta invite code first."
         case .invalidResponse: return "Vaani returned an unreadable response."
         case .service(let status):
-            switch status { case 401: return "Your beta session expired. Connect again with your invite code."; case 429: return "Beta quota reached. Try again later."; case 413: return "That recording is too long for beta."; default: return "Vaani beta service error (\(status))." }
+            switch status { case 401: return "Your beta session expired. Connect again with your invite code."; case 429: return "Beta quota reached. Try again later."; case 413: return "That recording is too long for beta."; case 504: return "Transcription took too long. Please try again."; default: return "Vaani beta service error (\(status))." }
         }
     }
 }
@@ -56,7 +56,7 @@ struct VaaniBetaClient {
         body.append(Data("--\(boundary)\r\nContent-Disposition: form-data; name=\"file\"; filename=\"recording.wav\"\r\nContent-Type: audio/wav\r\n\r\n".utf8))
         body.append(try Data(contentsOf: audioURL)); body.append(Data("\r\n--\(boundary)--\r\n".utf8))
         var request = URLRequest(url: base.appending(path: "v1/transcriptions").appending(queryItems: [URLQueryItem(name: "mode", value: mode.betaValue)]))
-        request.httpMethod = "POST"; request.timeoutInterval = 50
+        request.httpMethod = "POST"; request.timeoutInterval = 90
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         let (data, response) = try await URLSession.shared.upload(for: request, from: body)

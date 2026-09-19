@@ -65,7 +65,13 @@ async function transcribe(file, mode) {
   const [languageCode, sarvamMode] = allowedModes.get(mode) ?? [];
   if (!languageCode) throw Object.assign(new Error('Unsupported output mode'), { status: 400 });
   const form = new FormData(); form.append('model', 'saaras:v4'); form.append('language_code', languageCode); form.append('mode', sarvamMode); form.append('file', new Blob([file.content], { type: file.mime }), file.name);
-  const upstream = await fetch('https://api.sarvam.ai/speech-to-text', { method: 'POST', headers: { 'api-subscription-key': sarvamKey }, body: form, signal: AbortSignal.timeout(45_000) });
+  let upstream;
+  try {
+    upstream = await fetch('https://api.sarvam.ai/speech-to-text', { method: 'POST', headers: { 'api-subscription-key': sarvamKey }, body: form, signal: AbortSignal.timeout(75_000) });
+  } catch (error) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw Object.assign(new Error('Transcription provider timed out'), { status: 504 });
+    throw Object.assign(new Error('Transcription provider connection failed'), { status: 502 });
+  }
   const payload = await upstream.json().catch(() => ({})); if (!upstream.ok || typeof payload.transcript !== 'string') throw Object.assign(new Error('Transcription provider failed'), { status: 502 });
   return payload.transcript.trim();
 }
@@ -97,6 +103,6 @@ const server = http.createServer(async (req, res) => {
     return json(res, status, { error: status >= 500 ? 'service_error' : error.message }, requestId);
   }
 });
-server.requestTimeout = 60_000;
+server.requestTimeout = 120_000;
 server.headersTimeout = 15_000;
 server.listen(port, '0.0.0.0', () => console.log(`Vaani beta API listening on 0.0.0.0:${port}`));
