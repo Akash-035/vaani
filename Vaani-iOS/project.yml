@@ -1,0 +1,43 @@
+name: Vaani-iOS
+options:
+  minimumXcodeGenVersion: 2.38.0
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
+targets:
+  Vaani:
+    type: application
+    platform: iOS
+    dependencies:
+      - target: VaaniKeyboard
+        embed: true
+    sources:
+      - path: Sources/Vaani
+        excludes:
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vaani.ios
+        PRODUCT_NAME: Vaani
+        DEVELOPMENT_TEAM: FYV9PR66S6
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_FILE: Sources/Vaani/Info.plist
+        SWIFT_VERSION: 5.0
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: Sources/Vaani/Vaani.entitlements
+  VaaniKeyboard:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Sources/VaaniKeyboard
+        excludes:
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vaani.ios.keyboard
+        PRODUCT_NAME: Vaani Keyboard
+        DEVELOPMENT_TEAM: FYV9PR66S6
+        INFOPLIST_FILE: Sources/VaaniKeyboard/Info.plist
+        SWIFT_VERSION: 5.0
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: Sources/VaaniKeyboard/VaaniKeyboard.entitlements

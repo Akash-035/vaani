@@ -1,0 +1,18 @@
+.DS_Store
+.build/
+beta-server/.env
+beta-server/data/
+
+# Xcode and local developer state
+DerivedData/
+**/xcuserdata/
+*.xcuserstate
+
+# Local credentials and runtime artifacts
+.env
+*.pem
+*.p12
+*.mobileprovision
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

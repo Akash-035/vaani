@@ -1,0 +1,464 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12D4F54975DEC33B42CE0A3F /* VaaniKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3D663B4C66ECA5593213F145 /* VaaniKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9041566A2EECE89B7A3A7557 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */; };
+		9A7088C5152272942D429438 /* FlowSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C922715F1AED16CA72EFE71E /* FlowSession.swift */; };
+		AE88051A293450CE0635078B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773E093FB83BB30AEA47F653 /* ContentView.swift */; };
+		B6DA1718FB5ECE1D82E12A4B /* LiveSarvamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */; };
+		B923083D151B31829CC5E500 /* VaaniApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1B56F7C941CCE486A95497 /* VaaniApp.swift */; };
+		CFC615E1A895049ADAF22DC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 994DE1E3926B2846B277AD2C /* Assets.xcassets */; };
+		D68016BA2A9BAB9BA2406A0A /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA73178466500B6BC79B663 /* Models.swift */; };
+		D8D9E7148668D099194F3214 /* SarvamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */; };
+		E25C4F4E397458233A2B37C2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD0BA567DE5C497113710EA /* KeyboardViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FEA5CC5B347D2694B60C43D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F75E77EC59D347065B8C7F62 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69A685D3C7917152D44A4922;
+			remoteInfo = VaaniKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		12003ED30E76DB66C4C9A7EA /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				12D4F54975DEC33B42CE0A3F /* VaaniKeyboard.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSarvamClient.swift; sourceTree = "<group>"; };
+		3D663B4C66ECA5593213F145 /* VaaniKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VaaniKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		498DEC1D7EA4B6EC186801B9 /* Vaani.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vaani.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SarvamClient.swift; sourceTree = "<group>"; };
+		773E093FB83BB30AEA47F653 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		77BC03395B1C52374AAEF1E9 /* Vaani.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vaani.entitlements; sourceTree = "<group>"; };
+		994DE1E3926B2846B277AD2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BAA73178466500B6BC79B663 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		BBC71891517D56FBBB487479 /* VaaniKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VaaniKeyboard.entitlements; sourceTree = "<group>"; };
+		BDD0BA567DE5C497113710EA /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		BE1B56F7C941CCE486A95497 /* VaaniApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaaniApp.swift; sourceTree = "<group>"; };
+		C922715F1AED16CA72EFE71E /* FlowSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowSession.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		229A2A85A23503605208B7B9 /* Vaani */ = {
+			isa = PBXGroup;
+			children = (
+				994DE1E3926B2846B277AD2C /* Assets.xcassets */,
+				1F5FD9C07CA3571E8284DF24 /* AudioRecorder.swift */,
+				773E093FB83BB30AEA47F653 /* ContentView.swift */,
+				C922715F1AED16CA72EFE71E /* FlowSession.swift */,
+				3B5FDDF3FF2261395E47E1D4 /* LiveSarvamClient.swift */,
+				BAA73178466500B6BC79B663 /* Models.swift */,
+				5FA54A2007C342E3F8A61A6F /* SarvamClient.swift */,
+				77BC03395B1C52374AAEF1E9 /* Vaani.entitlements */,
+				BE1B56F7C941CCE486A95497 /* VaaniApp.swift */,
+			);
+			name = Vaani;
+			path = Sources/Vaani;
+			sourceTree = "<group>";
+		};
+		2457FE49DC1C867A3319EBE1 = {
+			isa = PBXGroup;
+			children = (
+				229A2A85A23503605208B7B9 /* Vaani */,
+				81E9EE44D819069B71E9CECE /* VaaniKeyboard */,
+				F47A4096E621015E21C87FC3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		81E9EE44D819069B71E9CECE /* VaaniKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				BDD0BA567DE5C497113710EA /* KeyboardViewController.swift */,
+				BBC71891517D56FBBB487479 /* VaaniKeyboard.entitlements */,
+			);
+			name = VaaniKeyboard;
+			path = Sources/VaaniKeyboard;
+			sourceTree = "<group>";
+		};
+		F47A4096E621015E21C87FC3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				498DEC1D7EA4B6EC186801B9 /* Vaani.app */,
+				3D663B4C66ECA5593213F145 /* VaaniKeyboard.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		69A685D3C7917152D44A4922 /* VaaniKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B7586ED76BEBCB5AFC5D225 /* Build configuration list for PBXNativeTarget "VaaniKeyboard" */;
+			buildPhases = (
+				4B65108A98036D3068008745 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VaaniKeyboard;
+			packageProductDependencies = (
+			);
+			productName = VaaniKeyboard;
+			productReference = 3D663B4C66ECA5593213F145 /* VaaniKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		F1C02C5B933A6C8FBB923097 /* Vaani */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43847D4CA693F533A9D5C377 /* Build configuration list for PBXNativeTarget "Vaani" */;
+			buildPhases = (
+				FAB07A8DF3E81F1850592C13 /* Sources */,
+				3D88CBFEE25CC8AD7290761C /* Resources */,
+				12003ED30E76DB66C4C9A7EA /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				645207EC2F2DC5811562FE9F /* PBXTargetDependency */,
+			);
+			name = Vaani;
+			packageProductDependencies = (
+			);
+			productName = Vaani;
+			productReference = 498DEC1D7EA4B6EC186801B9 /* Vaani.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F75E77EC59D347065B8C7F62 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					69A685D3C7917152D44A4922 = {
+						DevelopmentTeam = FYV9PR66S6;
+					};
+					F1C02C5B933A6C8FBB923097 = {
+						DevelopmentTeam = FYV9PR66S6;
+					};
+				};
+			};
+			buildConfigurationList = 4BD005FA8B616944BBE45E2F /* Build configuration list for PBXProject "Vaani-iOS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2457FE49DC1C867A3319EBE1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F47A4096E621015E21C87FC3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F1C02C5B933A6C8FBB923097 /* Vaani */,
+				69A685D3C7917152D44A4922 /* VaaniKeyboard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3D88CBFEE25CC8AD7290761C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFC615E1A895049ADAF22DC0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4B65108A98036D3068008745 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E25C4F4E397458233A2B37C2 /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAB07A8DF3E81F1850592C13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9041566A2EECE89B7A3A7557 /* AudioRecorder.swift in Sources */,
+				AE88051A293450CE0635078B /* ContentView.swift in Sources */,
+				9A7088C5152272942D429438 /* FlowSession.swift in Sources */,
+				B6DA1718FB5ECE1D82E12A4B /* LiveSarvamClient.swift in Sources */,
+				D68016BA2A9BAB9BA2406A0A /* Models.swift in Sources */,
+				D8D9E7148668D099194F3214 /* SarvamClient.swift in Sources */,
+				B923083D151B31829CC5E500 /* VaaniApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		645207EC2F2DC5811562FE9F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69A685D3C7917152D44A4922 /* VaaniKeyboard */;
+			targetProxy = FEA5CC5B347D2694B60C43D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5585614470B84C38C00436A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Sources/Vaani/Vaani.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FYV9PR66S6;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/Vaani/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.ios;
+				PRODUCT_NAME = Vaani;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5D8D4B2719E7DE768555F08A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		74395B119118F193D59E0B91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		81EB0172264F91FE6D72E4C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Sources/VaaniKeyboard/VaaniKeyboard.entitlements;
+				DEVELOPMENT_TEAM = FYV9PR66S6;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/VaaniKeyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.ios.keyboard;
+				PRODUCT_NAME = "Vaani Keyboard";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8C93D607F12257651D5DBA0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Sources/Vaani/Vaani.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = FYV9PR66S6;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/Vaani/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.ios;
+				PRODUCT_NAME = Vaani;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E598F985431EE7F467E50F06 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Sources/VaaniKeyboard/VaaniKeyboard.entitlements;
+				DEVELOPMENT_TEAM = FYV9PR66S6;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/VaaniKeyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.ios.keyboard;
+				PRODUCT_NAME = "Vaani Keyboard";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		43847D4CA693F533A9D5C377 /* Build configuration list for PBXNativeTarget "Vaani" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5585614470B84C38C00436A3 /* Debug */,
+				8C93D607F12257651D5DBA0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4B7586ED76BEBCB5AFC5D225 /* Build configuration list for PBXNativeTarget "VaaniKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E598F985431EE7F467E50F06 /* Debug */,
+				81EB0172264F91FE6D72E4C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4BD005FA8B616944BBE45E2F /* Build configuration list for PBXProject "Vaani-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74395B119118F193D59E0B91 /* Debug */,
+				5D8D4B2719E7DE768555F08A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F75E77EC59D347065B8C7F62 /* Project object */;
+}

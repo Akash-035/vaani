@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: "8080"
+      DATA_DIR: /var/lib/vaani
+    ports:
+      # Bind only to loopback. Tailscale Serve/Funnel is the sole public ingress.
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - vaani_beta_data:/var/lib/vaani
+
+volumes:
+  vaani_beta_data:

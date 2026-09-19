@@ -1,0 +1,23 @@
+name: Beta API
+
+on:
+  pull_request:
+    paths: [beta-server/**]
+  push:
+    branches: [main]
+    paths: [beta-server/**]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: beta-server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --check src/server.mjs
+      - run: npm test
+      - run: docker build -t vaani-beta-api:${{ github.sha }} .

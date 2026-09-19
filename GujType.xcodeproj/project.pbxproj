@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A05E84ABE463EA4D90A2872 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E295DE2B5C4DC121B04C252 /* AudioRecorder.swift */; };
+		32B07FBE6D683780198824FB /* GujTypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5F54A1101527FCBCA5414 /* GujTypeApp.swift */; };
+		44E5CD40BC1563A4CA8715E4 /* AppIcon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 32CA3C944753026B76AE3910 /* AppIcon.iconset */; };
+		4E28A93D09180ACB0C259D27 /* LiveOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CD365F857ABC1F81B9833 /* LiveOverlay.swift */; };
+		50CF5C97E4A7CE0B074800B0 /* LiveTextComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0E1FC72C46ACE52A6763 /* LiveTextComposition.swift */; };
+		5D5563B12316BC6A89957880 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4FE7BDF7E76DFC88B8AA8BD /* Assets.xcassets */; };
+		65DE87A564F6240AC31AE491 /* SarvamTranscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480E76BEE4900D0A846118CF /* SarvamTranscription.swift */; };
+		69AAA7B04414D0F9793004BE /* LiveSarvamStreaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6908C78656EB9A3B2523AFB /* LiveSarvamStreaming.swift */; };
+		829B3397E3E20C1B3A91ADFB /* PermissionsAndHotkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45BACF15FCBEF30FE0F908 /* PermissionsAndHotkey.swift */; };
+		8D469652AC61D4BBD5390556 /* LocalTranscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43B9BC9683D9FDAC10D37E2 /* LocalTranscription.swift */; };
+		A2BCE5168B7557FC2957F949 /* CloudCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8BD80F2C0819A084F977E7 /* CloudCleanup.swift */; };
+		C2DA8E6083F1EB55BF2FA583 /* FocusedTextInserter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C77ADCFEDA96A5B34EE686 /* FocusedTextInserter.swift */; };
+		CB28083CF5049836031ADF77 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9FDD0ED3712496F0B77750 /* AppState.swift */; };
+		D9039FDC16F5D329DA2B3DB2 /* gujarati_asr.py in Resources */ = {isa = PBXBuildFile; fileRef = 036E7184F988751621F63A44 /* gujarati_asr.py */; };
+		F9085B482787EB709308AAB0 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506A213B3BB97F961846B018 /* Views.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01C77ADCFEDA96A5B34EE686 /* FocusedTextInserter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedTextInserter.swift; sourceTree = "<group>"; };
+		036E7184F988751621F63A44 /* gujarati_asr.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = gujarati_asr.py; sourceTree = "<group>"; };
+		0AEE0E1FC72C46ACE52A6763 /* LiveTextComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextComposition.swift; sourceTree = "<group>"; };
+		1E295DE2B5C4DC121B04C252 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		32CA3C944753026B76AE3910 /* AppIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = AppIcon.iconset; sourceTree = "<group>"; };
+		480E76BEE4900D0A846118CF /* SarvamTranscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SarvamTranscription.swift; sourceTree = "<group>"; };
+		506A213B3BB97F961846B018 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		735E1B39A9C163B6D3C966EA /* GujType.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GujType.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D45BACF15FCBEF30FE0F908 /* PermissionsAndHotkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsAndHotkey.swift; sourceTree = "<group>"; };
+		7E9FDD0ED3712496F0B77750 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		9A8CD365F857ABC1F81B9833 /* LiveOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOverlay.swift; sourceTree = "<group>"; };
+		C4FE7BDF7E76DFC88B8AA8BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DDD5F54A1101527FCBCA5414 /* GujTypeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GujTypeApp.swift; sourceTree = "<group>"; };
+		EE8BD80F2C0819A084F977E7 /* CloudCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCleanup.swift; sourceTree = "<group>"; };
+		F43B9BC9683D9FDAC10D37E2 /* LocalTranscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTranscription.swift; sourceTree = "<group>"; };
+		F6908C78656EB9A3B2523AFB /* LiveSarvamStreaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSarvamStreaming.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0112D104473553F98A98464E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA3C944753026B76AE3910 /* AppIcon.iconset */,
+				036E7184F988751621F63A44 /* gujarati_asr.py */,
+			);
+			name = Resources;
+			path = Sources/GujType/Resources;
+			sourceTree = "<group>";
+		};
+		4F598A4AC033BAC529201EB8 /* GujType */ = {
+			isa = PBXGroup;
+			children = (
+				7E9FDD0ED3712496F0B77750 /* AppState.swift */,
+				C4FE7BDF7E76DFC88B8AA8BD /* Assets.xcassets */,
+				1E295DE2B5C4DC121B04C252 /* AudioRecorder.swift */,
+				EE8BD80F2C0819A084F977E7 /* CloudCleanup.swift */,
+				01C77ADCFEDA96A5B34EE686 /* FocusedTextInserter.swift */,
+				DDD5F54A1101527FCBCA5414 /* GujTypeApp.swift */,
+				9A8CD365F857ABC1F81B9833 /* LiveOverlay.swift */,
+				F6908C78656EB9A3B2523AFB /* LiveSarvamStreaming.swift */,
+				0AEE0E1FC72C46ACE52A6763 /* LiveTextComposition.swift */,
+				F43B9BC9683D9FDAC10D37E2 /* LocalTranscription.swift */,
+				7D45BACF15FCBEF30FE0F908 /* PermissionsAndHotkey.swift */,
+				480E76BEE4900D0A846118CF /* SarvamTranscription.swift */,
+				506A213B3BB97F961846B018 /* Views.swift */,
+			);
+			name = GujType;
+			path = Sources/GujType;
+			sourceTree = "<group>";
+		};
+		AEFCAFD946C74E6BCE485E14 = {
+			isa = PBXGroup;
+			children = (
+				4F598A4AC033BAC529201EB8 /* GujType */,
+				0112D104473553F98A98464E /* Resources */,
+				CA1C87FFF30737A8C884BDBC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CA1C87FFF30737A8C884BDBC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				735E1B39A9C163B6D3C966EA /* GujType.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5B976E9751A4BB89577327A /* GujType */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 062360F1295542720A1A1DCA /* Build configuration list for PBXNativeTarget "GujType" */;
+			buildPhases = (
+				BB97B9AFD3371578426FCABC /* Sources */,
+				2516A50ECEC8B5DCFA4333DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GujType;
+			packageProductDependencies = (
+			);
+			productName = GujType;
+			productReference = 735E1B39A9C163B6D3C966EA /* GujType.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9D99919419586095C47FF6B7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 76EFD3A814620359E9D528F4 /* Build configuration list for PBXProject "GujType" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = AEFCAFD946C74E6BCE485E14;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CA1C87FFF30737A8C884BDBC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5B976E9751A4BB89577327A /* GujType */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2516A50ECEC8B5DCFA4333DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44E5CD40BC1563A4CA8715E4 /* AppIcon.iconset in Resources */,
+				5D5563B12316BC6A89957880 /* Assets.xcassets in Resources */,
+				D9039FDC16F5D329DA2B3DB2 /* gujarati_asr.py in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB97B9AFD3371578426FCABC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB28083CF5049836031ADF77 /* AppState.swift in Sources */,
+				1A05E84ABE463EA4D90A2872 /* AudioRecorder.swift in Sources */,
+				A2BCE5168B7557FC2957F949 /* CloudCleanup.swift in Sources */,
+				C2DA8E6083F1EB55BF2FA583 /* FocusedTextInserter.swift in Sources */,
+				32B07FBE6D683780198824FB /* GujTypeApp.swift in Sources */,
+				4E28A93D09180ACB0C259D27 /* LiveOverlay.swift in Sources */,
+				69AAA7B04414D0F9793004BE /* LiveSarvamStreaming.swift in Sources */,
+				50CF5C97E4A7CE0B074800B0 /* LiveTextComposition.swift in Sources */,
+				8D469652AC61D4BBD5390556 /* LocalTranscription.swift in Sources */,
+				829B3397E3E20C1B3A91ADFB /* PermissionsAndHotkey.swift in Sources */,
+				65DE87A564F6240AC31AE491 /* SarvamTranscription.swift in Sources */,
+				F9085B482787EB709308AAB0 /* Views.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5A85C22E166249F54339E05A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/GujType/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.app;
+				PRODUCT_NAME = Vaani;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9C1FDFF34917E9E1C131F3C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		AF7F03C88B03E1E264A672EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/GujType/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vaani.app;
+				PRODUCT_NAME = Vaani;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EC2F1BD753A0BA335EDFDBD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		062360F1295542720A1A1DCA /* Build configuration list for PBXNativeTarget "GujType" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A85C22E166249F54339E05A /* Debug */,
+				AF7F03C88B03E1E264A672EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		76EFD3A814620359E9D528F4 /* Build configuration list for PBXProject "GujType" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC2F1BD753A0BA335EDFDBD9 /* Debug */,
+				9C1FDFF34917E9E1C131F3C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9D99919419586095C47FF6B7 /* Project object */;
+}
