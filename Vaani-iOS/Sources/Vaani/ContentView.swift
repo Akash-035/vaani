@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var errorMessage: String?
     @State private var showReturnGuide = false
+    @State private var betaSessionReady = VaaniBetaKeychain.read() != nil
     private let sharedDefaults = UserDefaults(suiteName: "group.com.vaani.ios")!
 
     var body: some View {
@@ -36,7 +37,7 @@ struct ContentView: View {
                         Button { Task { do { try await flowSession.startTimed() } catch { errorMessage = error.localizedDescription } } } label: {
                             Label(flowSession.isEnabled ? "Flow Session Active — 5 min" : "Start Flow Session — 5 min", systemImage: flowSession.isEnabled ? "waveform.circle.fill" : "waveform.circle")
                                 .frame(maxWidth: .infinity).padding(.vertical, 4)
-                        }.buttonStyle(.bordered).tint(flowSession.isEnabled ? .green : .white).disabled(flowSession.isEnabled || VaaniBetaKeychain.read() == nil)
+                        }.buttonStyle(.bordered).tint(flowSession.isEnabled ? .green : .white).disabled(flowSession.isEnabled || !betaSessionReady)
                         Text(flowSession.status).font(.footnote).foregroundStyle(.white.opacity(0.66)).multilineTextAlignment(.center)
                         if flowSession.isEnabled {
                             Text("Mic active · \(flowSession.remainingSeconds / 60):\(String(format: "%02d", flowSession.remainingSeconds % 60)) remaining").monospacedDigit()
@@ -63,8 +64,8 @@ struct ContentView: View {
                     }.padding(.horizontal, 20).padding(.top, 18).padding(.bottom, 30)
                 }.scrollIndicators(.hidden)
             }.foregroundStyle(.white)
-            .sheet(isPresented: $showSettings) { SettingsSheet(endpoint: $betaAPIEndpoint) }
-            .onAppear { sharedDefaults.set(mode.rawValue, forKey: "keyboardOutputMode") }
+            .sheet(isPresented: $showSettings) { SettingsSheet(endpoint: $betaAPIEndpoint, sessionReady: $betaSessionReady) }
+            .onAppear { sharedDefaults.set(mode.rawValue, forKey: "keyboardOutputMode"); betaSessionReady = VaaniBetaKeychain.read() != nil }
             .onOpenURL { url in
                 guard url.scheme == "vaani", url.host == "dictate" else { return }
                 Task {
@@ -125,8 +126,9 @@ private struct ReturnToAppGuide: View {
 
 private struct SettingsSheet: View {
     @Binding var endpoint: String
+    @Binding var sessionReady: Bool
     @State private var inviteCode = ""
     @State private var status = VaaniBetaKeychain.read() == nil ? "Not connected" : "Saved beta session is active"
     @Environment(\.dismiss) private var dismiss
-    var body: some View { NavigationStack { Form { Section("Vaani Cloud beta") { TextField("https://…", text: $endpoint).textInputAutocapitalization(.never).autocorrectionDisabled(); SecureField("Beta invite code", text: $inviteCode); Button("Connect") { Task { do { try await VaaniBetaClient().connect(endpoint: endpoint, inviteCode: inviteCode); inviteCode = ""; status = "Connected — session saved securely" } catch { status = error.localizedDescription } } }; Text(status).font(.footnote).foregroundStyle(status.hasPrefix("Connected") || status.hasPrefix("Saved") ? .green : .secondary); Text("The invite code is exchanged for a short-lived session and is not stored on this iPhone.").font(.footnote).foregroundStyle(.secondary) }; Section("Keyboard") { Text("Keyboard cloud dictation is being migrated separately. Enable Vaani Keyboard only after its beta update is installed.").font(.footnote).foregroundStyle(.secondary) } }.navigationTitle("Settings").toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } } } }
+    var body: some View { NavigationStack { Form { Section("Vaani Cloud beta") { TextField("https://…", text: $endpoint).textInputAutocapitalization(.never).autocorrectionDisabled(); SecureField("Beta invite code", text: $inviteCode); Button("Connect") { Task { do { try await VaaniBetaClient().connect(endpoint: endpoint, inviteCode: inviteCode); inviteCode = ""; sessionReady = true; status = "Connected — session saved securely" } catch { sessionReady = false; status = error.localizedDescription } } }; Text(status).font(.footnote).foregroundStyle(status.hasPrefix("Connected") || status.hasPrefix("Saved") ? .green : .secondary); Text("The invite code is exchanged for a short-lived session and is not stored on this iPhone.").font(.footnote).foregroundStyle(.secondary) }; Section("Keyboard") { Text("Keyboard cloud dictation is being migrated separately. Enable Vaani Keyboard only after its beta update is installed.").font(.footnote).foregroundStyle(.secondary) } }.navigationTitle("Settings").toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } } } }
 }
