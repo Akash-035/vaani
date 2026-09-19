@@ -15,6 +15,7 @@ let package = Package(
                 .linkedFramework("ApplicationServices"),
                 .linkedFramework("Security")
             ]
-        )
+        ),
+        .testTarget(name: "GujTypeTests", dependencies: ["GujType"])
     ]
 )

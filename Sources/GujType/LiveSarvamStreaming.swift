@@ -14,10 +14,10 @@ final class LiveSarvamStreaming {
     private var committed = ""
     private var draft = ""
     private var lastSequence = 0
-    private let onTranscript: (String) -> Void
+    private let onTranscript: (String, Bool) -> Void
     private let onError: (String) -> Void
 
-    init(onTranscript: @escaping (String) -> Void, onError: @escaping (String) -> Void) {
+    init(onTranscript: @escaping (String, Bool) -> Void, onError: @escaping (String) -> Void) {
         self.onTranscript = onTranscript; self.onError = onError
         var captured: AsyncStream<Data>.Continuation!
         stream = AsyncStream(bufferingPolicy: .bufferingOldest(50)) { captured = $0 }
@@ -114,7 +114,7 @@ final class LiveSarvamStreaming {
                     if event == "transcript.final" {
                         committed = [committed, text].filter { !$0.isEmpty }.joined(separator: " "); draft = ""
                     } else { draft = text }
-                    onTranscript([committed, draft].filter { !$0.isEmpty }.joined(separator: " "))
+                    onTranscript(text, event == "transcript.final")
                 case "done": done = true; return
                 case "error": throw SarvamError.service("Live dictation: \(payload["code"] as? String ?? "connection error"). Release the shortcut and retry.")
                 default: break

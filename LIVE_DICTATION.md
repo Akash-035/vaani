@@ -37,6 +37,12 @@ new `/v1/realtime` WebSocket upgrade.
   copy the result from History. Password fields are excluded from direct insertion.
 - Gujlish/Hinglish partials are locally transliterated; provider final spellings
   can differ. All five output modes are exposed for empirical language testing.
+- Editor updates are coalesced every 120 ms (250 ms for Gujlish/Hinglish).
+  Romanized drafts hold the trailing word until more context or a final arrives.
+  Final phrases render immediately and are protected from subsequent corrections.
+  Unchanged text produces no Accessibility write. New suffixes append at the
+  existing caret without selection; corrections replace only the changed
+  grapheme-aligned range. Some editors may still briefly highlight a correction.
 
 ## Real-device acceptance checks (not yet verified)
 

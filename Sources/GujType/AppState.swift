@@ -80,8 +80,8 @@ final class AppState: ObservableObject {
     private var recordingStartedAt: Date?
     private var recordingOutputMode: OutputMode?
     private var liveStreamer: LiveSarvamStreaming?
-    private var liveInsertedText = ""
-    private var liveCommittedText = ""
+    private var livePresentation = LiveTranscriptPresentation()
+    private var liveUpdateTask: Task<Void, Never>?
     private var liveComposition: LiveTextComposition?
     private let liveOverlay = LiveOverlayController()
 
@@ -167,10 +167,10 @@ final class AppState: ObservableObject {
             // instead of showing a stale Sarvam result during local English recording.
             liveTranscript = ""
             if useLivePreview && usesCloudForCurrentMode {
-                liveInsertedText = ""
-                liveCommittedText = ""
+                liveUpdateTask?.cancel(); liveUpdateTask = nil
+                livePresentation = LiveTranscriptPresentation()
                 liveComposition = LiveTextComposition.begin()
-                let streamer = LiveSarvamStreaming(onTranscript: { [weak self] text in self?.acceptLiveTranscript(text) }, onError: { [weak self] error in
+                let streamer = LiveSarvamStreaming(onTranscript: { [weak self] text, isFinal in self?.acceptLiveTranscript(text, isFinal: isFinal) }, onError: { [weak self] error in
                     self?.status = error
                     Task { await self?.stopAndTranscribe() }
                 })
@@ -197,6 +197,7 @@ final class AppState: ObservableObject {
         let liveRun = liveStreamer != nil
         let outputMode = recordingOutputMode ?? self.outputMode
         defer {
+            liveUpdateTask?.cancel(); liveUpdateTask = nil
             liveStreamer?.cancel(); liveStreamer = nil; liveComposition = nil
             recordingOutputMode = nil; isProcessing = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
@@ -225,11 +226,11 @@ final class AppState: ObservableObject {
                 : OutputFormatter.format(transcript, mode: outputMode)
             // Sarvam realtime partial/final events can be native script even for a translit
             // request. Format streamed text locally so the preview always matches the picker.
-            if liveRun { output = OutputFormatter.format(transcript, mode: outputMode) }
+            if liveRun { output = livePresentation.committed }
             lastOutput = output
             guard !output.isEmpty else { status = "No speech detected"; return }
             let method: String
-            if liveRun, let composition = liveComposition, composition.replace(with: output) {
+            if liveRun, let composition = liveComposition, composition.replace(with: output, committedUTF16Length: output.utf16.count) {
                 method = "live Accessibility composition"
             } else if liveRun {
                 method = "live preview — copy from History"
@@ -283,13 +284,32 @@ final class AppState: ObservableObject {
         personalDictionary.removeAll { $0 == term }
     }
 
-    private func acceptLiveTranscript(_ rawText: String) {
+    private func acceptLiveTranscript(_ rawText: String, isFinal: Bool) {
         let outputMode = recordingOutputMode ?? self.outputMode
-        guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         let display = OutputFormatter.format(Transcript(text: rawText, language: outputMode.whisperLanguage), mode: outputMode)
-        guard !display.isEmpty else { return }
-        liveTranscript = display
-        if let composition = liveComposition, !composition.replace(with: display) {
+        livePresentation.receive(display, isFinal: isFinal)
+        if liveTranscript != livePresentation.preview { liveTranscript = livePresentation.preview }
+        if isFinal {
+            liveUpdateTask?.cancel(); liveUpdateTask = nil
+            renderLiveText()
+        } else if liveUpdateTask == nil {
+            // Coalesce rather than debounce: continuous partials cannot postpone
+            // rendering indefinitely. Romanized output gets more settling time.
+            let delay: UInt64 = (outputMode == .gujlish || outputMode == .hinglish) ? 250_000_000 : 120_000_000
+            liveUpdateTask = Task { [weak self] in
+                do { try await Task.sleep(nanoseconds: delay) } catch { return }
+                guard let self else { return }
+                self.liveUpdateTask = nil
+                self.renderLiveText()
+            }
+        }
+    }
+
+    private func renderLiveText() {
+        let mode = recordingOutputMode ?? outputMode
+        let display = livePresentation.editorText(holdLastWord: mode == .gujlish || mode == .hinglish)
+        if let composition = liveComposition,
+           !composition.replace(with: display, committedUTF16Length: livePresentation.committed.utf16.count) {
             liveComposition = nil
             status = "Live preview only — field or cursor changed. Copy the result from History."
         }
