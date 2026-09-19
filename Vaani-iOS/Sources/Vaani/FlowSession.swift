@@ -11,7 +11,7 @@ final class FlowSession: NSObject, ObservableObject {
     private let defaults = UserDefaults(suiteName: "group.com.vaani.ios")!
     private var engine: AVAudioEngine?
     private var converter: AVAudioConverter?
-    private var commandTimer: Timer?
+    private var commandTimer: DispatchSourceTimer?
     private var expiryTimer: Timer?
     private var activeRequestID: String?
     private var pcm = Data()
@@ -55,11 +55,18 @@ final class FlowSession: NSObject, ObservableObject {
         deadline = Date().addingTimeInterval(300)
         defaults.removeObject(forKey: "flowCommand")
         isEnabled = true; status = "Flow is on for \(minutes) minutes — switch to any app and use Vaani Keyboard"
-        commandTimer = Timer.scheduledTimer(withTimeInterval: 0.15, repeats: true) { [weak self] _ in Task { @MainActor in self?.readKeyboardCommand() } }
+        // A run-loop Timer can stop advancing while the containing app is behind a
+        // keyboard. The audio background mode keeps this dispatch timer eligible to
+        // maintain the command bridge and heartbeat for the bounded Flow session.
+        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .userInitiated))
+        timer.schedule(deadline: .now(), repeating: .milliseconds(150), leeway: .milliseconds(30))
+        timer.setEventHandler { [weak self] in Task { @MainActor in self?.readKeyboardCommand() } }
+        timer.resume()
+        commandTimer = timer
     }
 
     func stop() {
-        commandTimer?.invalidate(); commandTimer = nil
+        commandTimer?.cancel(); commandTimer = nil
         expiryTimer?.invalidate(); expiryTimer = nil
         engine?.inputNode.removeTap(onBus: 0); engine?.stop(); engine = nil; converter = nil
         activeRequestID = nil; pcm.removeAll()
