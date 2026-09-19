@@ -16,6 +16,7 @@ enum OutputMode: String, CaseIterable, Identifiable {
         }
     }
     var sarvamMode: String { self == .gujlish || self == .hinglish ? "translit" : "transcribe" }
+    var betaValue: String { switch self { case .gujarati: return "gujarati"; case .gujlish: return "gujlish"; case .hindi: return "hindi"; case .hinglish: return "hinglish"; case .english: return "english" } }
 }
 
 enum VaaniError: LocalizedError {
