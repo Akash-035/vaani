@@ -102,4 +102,4 @@ const server = http.createServer(async (req, res) => {
 });
 server.requestTimeout = 60_000;
 server.headersTimeout = 15_000;
-server.listen(port, '127.0.0.1', () => console.log(`Vaani beta API listening on 127.0.0.1:${port}`));
+server.listen(port, '0.0.0.0', () => console.log(`Vaani beta API listening on 0.0.0.0:${port}`));
