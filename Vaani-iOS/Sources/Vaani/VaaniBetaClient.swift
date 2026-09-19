@@ -42,7 +42,10 @@ struct VaaniBetaClient {
         request.httpBody = try JSONEncoder().encode(["inviteCode": inviteCode])
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw VaaniBetaError.invalidResponse }
-        guard (200..<300).contains(http.statusCode) else { throw VaaniBetaError.service(http.statusCode) }
+        guard (200..<300).contains(http.statusCode) else {
+            if http.statusCode == 401 { throw VaaniError.message("That beta invite code was not accepted.") }
+            throw VaaniBetaError.service(http.statusCode)
+        }
         try VaaniBetaKeychain.save(try JSONDecoder().decode(SessionReply.self, from: data).accessToken)
     }
 

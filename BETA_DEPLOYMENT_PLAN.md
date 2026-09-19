@@ -17,7 +17,7 @@ Provider secrets stay in the server `.env`. They must never enter an iOS app bun
 
 ## Beta operating limits
 
-- Maximum audio payload: 10 MiB; requested maximum recording duration: 120 seconds.
+- Maximum audio payload: 10 MiB. Decoded recording-duration enforcement is required before public launch; beta relies on this payload ceiling and per-user quotas because Apple recorder WAV headers are not reliable until fully finalized.
 - Maximum successful transcriptions: 60 per user per UTC day and 20 API requests per minute.
 - Audio is held only in request memory and discarded after the upstream request completes. SQLite records a pseudonymous subject, timestamp, status, and request ID only.
 - The server applies the model, language mapping, quota, and provider key. Clients cannot select a model or provider key.

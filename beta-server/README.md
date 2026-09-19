@@ -20,7 +20,7 @@ Use `tailscale serve` while only developers are testing. For external TestFlight
 
 `POST /v1/beta/session` accepts `{ "inviteCode": "..." }` and returns a 12-hour bearer token. This is beta-only authentication. Replace it with server-verified Sign in with Apple and App Attest before a public launch.
 
-`POST /v1/transcriptions?mode=gujarati` accepts a PCM WAV `file` in `multipart/form-data`; it requires the bearer token. Valid modes are `gujarati`, `gujlish`, `hindi`, `hinglish`, and `english`.
+`POST /v1/transcriptions?mode=gujarati` accepts a PCM WAV `file` in `multipart/form-data`; it requires the bearer token. Valid modes are `gujarati`, `gujlish`, `hindi`, `hinglish`, and `english`. The beta enforces its 10 MiB payload cap; decoded-duration enforcement is a production-launch requirement.
 
 ## Operations
 

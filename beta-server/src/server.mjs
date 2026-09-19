@@ -51,16 +51,13 @@ function multipartFile(buffer, contentType) {
   if (!/^audio\/(wav|x-wav)$/i.test(mime)) throw Object.assign(new Error('Only WAV audio is supported during beta'), { status: 415 });
   return { content, name: name.replace(/[^A-Za-z0-9._-]/g, '_'), mime };
 }
-function assertWavDuration(file) {
-  // Client recorders produce PCM WAV. Rejecting unknown codecs is intentional in the
-  // closed beta: it makes duration and cost bounds deterministic before proxying.
+function assertWav(file) {
+  // Some Apple recorder variants finalize WAV headers asynchronously, so byte-rate
+  // fields are not a reliable server-side duration source. The request byte ceiling
+  // and per-user quota remain the beta abuse controls; production uses decoded media
+  // duration before provider submission.
   if (file.content.length < 44 || file.content.toString('ascii', 0, 4) !== 'RIFF' || file.content.toString('ascii', 8, 12) !== 'WAVE') {
     throw Object.assign(new Error('Invalid WAV audio'), { status: 415 });
-  }
-  const bytesPerSecond = file.content.readUInt32LE(28);
-  const duration = (file.content.length - 44) / bytesPerSecond;
-  if (!Number.isFinite(duration) || bytesPerSecond === 0 || duration > maxAudioSeconds) {
-    throw Object.assign(new Error(`Audio must be at most ${maxAudioSeconds} seconds`), { status: 413 });
   }
 }
 async function transcribe(file, mode) {
@@ -90,7 +87,7 @@ const server = http.createServer(async (req, res) => {
       if (countToday(subject) >= dailyLimit) return json(res, 429, { error: 'daily_quota_exhausted' }, requestId);
       const mode = new URL(req.url, 'http://localhost').searchParams.get('mode') ?? '';
       const file = multipartFile(await body(req, maxAudioBytes), req.headers['content-type']);
-      assertWavDuration(file);
+      assertWav(file);
       const text = await transcribe(file, mode); if (!text) throw Object.assign(new Error('No speech detected'), { status: 422 });
       record(subject, 200, requestId); return json(res, 200, { transcript: text, requestId }, requestId);
     }
