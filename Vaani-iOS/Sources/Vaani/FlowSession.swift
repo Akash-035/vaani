@@ -106,13 +106,24 @@ final class FlowSession: NSObject, ObservableObject {
         defer { activeRequestID = nil; self.pcm.removeAll(); isTranscribing = false; status = isEnabled ? "Flow is on — ready for the next dictation" : "No microphone session is active" }
         guard pcm.count > 1_600 else { complete(requestID: requestID, result: nil, error: "No speech was captured."); return }
         do {
-            let url = try WAVFile.write(pcm16: pcm, sampleRate: 16_000)
-            defer { try? FileManager.default.removeItem(at: url) }
             let rawMode = defaults.string(forKey: "keyboardOutputMode") ?? OutputMode.gujlish.rawValue
             let mode = OutputMode(rawValue: rawMode) ?? .gujlish
             let endpoint = UserDefaults.standard.string(forKey: "betaAPIEndpoint") ?? ""
-            let text = try await VaaniBetaClient().transcribe(audioURL: url, mode: mode, endpoint: endpoint)
-            complete(requestID: requestID, result: text, error: nil)
+            // Sarvam's synchronous REST endpoint accepts at most 30 seconds. Flow
+            // captures PCM at a known 16 kHz mono/16-bit format, so split long
+            // utterances locally before upload instead of relying on WAV headers.
+            let bytesPerChunk = 28 * 16_000 * MemoryLayout<Int16>.size
+            let chunks = stride(from: 0, to: pcm.count, by: bytesPerChunk).map {
+                pcm.subdata(in: $0..<min($0 + bytesPerChunk, pcm.count))
+            }
+            var transcripts: [String] = []
+            for (index, chunk) in chunks.enumerated() {
+                if chunks.count > 1 { status = "Transcribing part \(index + 1) of \(chunks.count)…" }
+                let url = try WAVFile.write(pcm16: chunk, sampleRate: 16_000)
+                defer { try? FileManager.default.removeItem(at: url) }
+                transcripts.append(try await VaaniBetaClient().transcribe(audioURL: url, mode: mode, endpoint: endpoint))
+            }
+            complete(requestID: requestID, result: transcripts.joined(separator: " "), error: nil)
         } catch { complete(requestID: requestID, result: nil, error: error.localizedDescription) }
     }
 

@@ -72,7 +72,16 @@ async function transcribe(file, mode) {
     if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw Object.assign(new Error('Transcription provider timed out'), { status: 504 });
     throw Object.assign(new Error('Transcription provider connection failed'), { status: 502 });
   }
-  const payload = await upstream.json().catch(() => ({})); if (!upstream.ok || typeof payload.transcript !== 'string') throw Object.assign(new Error('Transcription provider failed'), { status: 502 });
+  const payload = await upstream.json().catch(() => ({}));
+  if (!upstream.ok) {
+    // Never log provider payloads: they can include user-facing detail. The status
+    // is enough to diagnose an integration issue without retaining speech context.
+    console.error(JSON.stringify({ upstream: 'sarvam', status: upstream.status }));
+    if (upstream.status === 422) throw Object.assign(new Error('Audio must be at most 30 seconds per beta request'), { status: 413 });
+    if (upstream.status === 429) throw Object.assign(new Error('Transcription provider is rate limited'), { status: 503 });
+    throw Object.assign(new Error('Transcription provider failed'), { status: 502 });
+  }
+  if (typeof payload.transcript !== 'string') throw Object.assign(new Error('Transcription provider returned an invalid response'), { status: 502 });
   return payload.transcript.trim();
 }
 const server = http.createServer(async (req, res) => {
