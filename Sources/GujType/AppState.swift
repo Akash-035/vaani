@@ -65,6 +65,8 @@ final class AppState: ObservableObject {
     }
     @Published var liveTranscript = ""
     @Published var isProcessing = false
+    @Published private(set) var dictationError: String?
+    private var dictationSessionID = UUID()
     @Published private(set) var personalDictionary: [String] {
         didSet { UserDefaults.standard.set(personalDictionary, forKey: "personalDictionary") }
     }
@@ -161,6 +163,9 @@ final class AppState: ObservableObject {
             return
         }
         do {
+            dictationSessionID = UUID()
+            let sessionID = dictationSessionID
+            dictationError = nil
             recordingOutputMode = outputMode
             // Whisper runs only after release, so it has no partial text to display. Always
             // clear the previous session first; the overlay will correctly say Listening…
@@ -171,8 +176,13 @@ final class AppState: ObservableObject {
                 livePresentation = LiveTranscriptPresentation()
                 liveComposition = LiveTextComposition.begin()
                 let streamer = LiveSarvamStreaming(onTranscript: { [weak self] text, isFinal in self?.acceptLiveTranscript(text, isFinal: isFinal) }, onError: { [weak self] error in
+                    guard self?.dictationSessionID == sessionID else { return }
+                    self?.dictationError = error
                     self?.status = error
-                    Task { await self?.stopAndTranscribe() }
+                    Task {
+                        guard self?.dictationSessionID == sessionID else { return }
+                        await self?.stopAndTranscribe()
+                    }
                 })
                 try streamer.start(outputMode: outputMode, endpoint: betaAPIEndpoint)
                 liveStreamer = streamer
@@ -185,7 +195,14 @@ final class AppState: ObservableObject {
             liveOverlay.show(appState: self)
             recordingStartedAt = Date()
             status = liveStreamer == nil ? "Recording… release \(shortcut.displayName) to transcribe" : "Live dictation — speak now (2-minute limit)"
-        } catch { liveStreamer?.cancel(); liveStreamer = nil; status = "Could not start microphone: \(error.localizedDescription)" }
+        } catch {
+            liveStreamer?.cancel(); liveStreamer = nil
+            recorder.cancel()
+            isRecording = false; isProcessing = false
+            dictationError = error.localizedDescription
+            status = "Could not start dictation: \(error.localizedDescription)"
+            liveOverlay.show(appState: self)
+        }
     }
 
     func stopAndTranscribe() async {
@@ -195,13 +212,15 @@ final class AppState: ObservableObject {
         let recordingDuration = max(0, Date().timeIntervalSince(recordingStartedAt ?? Date()))
         recordingStartedAt = nil
         let liveRun = liveStreamer != nil
+        let sessionID = dictationSessionID
         let outputMode = recordingOutputMode ?? self.outputMode
         defer {
             liveUpdateTask?.cancel(); liveUpdateTask = nil
             liveStreamer?.cancel(); liveStreamer = nil; liveComposition = nil
             recordingOutputMode = nil; isProcessing = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-                guard let self, !self.isRecording, !self.isProcessing else { return }
+                guard let self, self.dictationSessionID == sessionID, self.dictationError == nil,
+                      !self.isRecording, !self.isProcessing else { return }
                 self.liveOverlay.hide()
             }
         }
@@ -245,6 +264,7 @@ final class AppState: ObservableObject {
             if history.count > 100 { history.removeLast(history.count - 100) }
             status = method == "live preview — copy from History" ? "Live dictation saved — copy from History" : "Inserted via \(usesCloudForCurrentMode ? "Vaani Cloud" : "local Whisper") using \(method)"
         } catch {
+            dictationError = error.localizedDescription
             if liveRun { lastOutput = liveTranscript }
             status = error.localizedDescription
         }

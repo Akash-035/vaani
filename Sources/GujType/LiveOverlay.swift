@@ -25,18 +25,19 @@ final class LiveOverlayController {
         screen = NSScreen.main ?? NSScreen.screens.first
         panel.contentView = NSHostingView(rootView: LiveOverlayView { [weak self] expanded in
             self?.resize(expanded: expanded)
-        }.environmentObject(appState))
-        resize(expanded: false)
+        }.environmentObject(appState).id(UUID()))
+        resize(expanded: false, animated: false)
         panel.orderFrontRegardless()
     }
 
     func hide() { panel?.orderOut(nil) }
 
-    private func resize(expanded: Bool) {
+    private func resize(expanded: Bool, animated: Bool = true) {
         guard let panel, let screen else { return }
         let height = expanded ? expandedHeight : compactHeight
         let visible = screen.visibleFrame
         let frame = NSRect(x: visible.midX - width / 2, y: visible.minY + 24, width: width, height: height)
+        if !animated { panel.setFrame(frame, display: true); return }
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.26
             context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
@@ -64,16 +65,19 @@ private struct LiveOverlayView: View {
     private var isLiveText: Bool { !app.liveTranscript.isEmpty }
     private var isListening: Bool { app.isRecording && !isLiveText }
     private var title: String {
+        if app.dictationError != nil { return "Dictation stopped" }
+        if !app.isRecording && !app.isProcessing { return "Finished" }
         if app.isProcessing { return "Transcribing" }
         if isListening { return "Listening" }
         return "Live dictation"
     }
     private var transcript: String {
+        if let error = app.dictationError { return error }
         if isLiveText { return app.liveTranscript }
         if app.isProcessing { return "Your recording is being transcribed. This will only take a moment." }
         return "Speak naturally. Your words will appear here as they are recognised."
     }
-    private var canExpand: Bool { isLiveText || app.isProcessing }
+    private var canExpand: Bool { isLiveText || app.isProcessing || app.dictationError != nil }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -139,7 +143,9 @@ private struct LiveOverlayView: View {
     }
 
     private var compactTranscript: String {
-        if isLiveText { return displayedTranscript }
+        if let error = app.dictationError { return error }
+        if isLiveText { return app.liveTranscript }
+        if !app.isRecording && !app.isProcessing { return app.lastOutput.isEmpty ? app.status : app.lastOutput }
         if app.isProcessing { return "Finalising the words you just spoke…" }
         return "Speak naturally · release your shortcut when you’re done"
     }

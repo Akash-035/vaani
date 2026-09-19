@@ -119,7 +119,14 @@ final class LiveSarvamStreaming {
                 case "error": throw SarvamError.service("Live dictation: \(payload["code"] as? String ?? "connection error"). Release the shortcut and retry.")
                 default: break
                 }
-            } catch { if !Task.isCancelled { fail(error) }; return }
+            } catch {
+                if !Task.isCancelled {
+                    if let response = socket.response as? HTTPURLResponse, response.statusCode != 101 {
+                        fail(VaaniBetaError.service(status: response.statusCode, message: ""))
+                    } else { fail(error) }
+                }
+                return
+            }
         }
     }
 }

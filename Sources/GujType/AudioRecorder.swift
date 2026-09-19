@@ -13,8 +13,10 @@ final class AudioRecorder {
     private var onPCMChunk: ((Data) -> Void)?
     private var pendingPCM = Data()
     private let audioLock = NSLock()
+    private var hasTap = false
 
     func start(onPCMChunk: ((Data) -> Void)? = nil) throws {
+        cancel()
         let input = engine.inputNode
         let format = input.outputFormat(forBus: 0)
         self.onPCMChunk = onPCMChunk
@@ -34,17 +36,27 @@ final class AudioRecorder {
             try? self.file?.write(from: buffer)
             self.stream(buffer)
         }
+        hasTap = true
         engine.prepare()
         try engine.start()
     }
     func stop() throws -> URL {
         guard let url else { throw RecordingError.notRecording }
         engine.inputNode.removeTap(onBus: 0)
+        hasTap = false
         engine.stop()
         audioLock.lock(); defer { audioLock.unlock() }
         if !pendingPCM.isEmpty { onPCMChunk?(pendingPCM); pendingPCM.removeAll() }
         file = nil; self.url = nil; streamingConverter = nil; streamFormat = nil; onPCMChunk = nil
         return url
+    }
+
+    func cancel() {
+        if hasTap { engine.inputNode.removeTap(onBus: 0); hasTap = false }
+        engine.stop()
+        audioLock.lock(); defer { audioLock.unlock() }
+        file = nil; url = nil; streamingConverter = nil; streamFormat = nil
+        onPCMChunk = nil; pendingPCM.removeAll()
     }
 
     private func stream(_ buffer: AVAudioPCMBuffer) {
