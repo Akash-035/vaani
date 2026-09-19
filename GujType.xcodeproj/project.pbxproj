@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A05E84ABE463EA4D90A2872 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E295DE2B5C4DC121B04C252 /* AudioRecorder.swift */; };
 		32B07FBE6D683780198824FB /* GujTypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5F54A1101527FCBCA5414 /* GujTypeApp.swift */; };
+		420957146C7CAC7E4E70E84B /* VaaniBetaTranscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992E044A8FFFEE2DD045271 /* VaaniBetaTranscription.swift */; };
 		44E5CD40BC1563A4CA8715E4 /* AppIcon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 32CA3C944753026B76AE3910 /* AppIcon.iconset */; };
 		4E28A93D09180ACB0C259D27 /* LiveOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8CD365F857ABC1F81B9833 /* LiveOverlay.swift */; };
 		50CF5C97E4A7CE0B074800B0 /* LiveTextComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0E1FC72C46ACE52A6763 /* LiveTextComposition.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		01C77ADCFEDA96A5B34EE686 /* FocusedTextInserter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedTextInserter.swift; sourceTree = "<group>"; };
 		036E7184F988751621F63A44 /* gujarati_asr.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = gujarati_asr.py; sourceTree = "<group>"; };
+		0992E044A8FFFEE2DD045271 /* VaaniBetaTranscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaaniBetaTranscription.swift; sourceTree = "<group>"; };
 		0AEE0E1FC72C46ACE52A6763 /* LiveTextComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextComposition.swift; sourceTree = "<group>"; };
 		1E295DE2B5C4DC121B04C252 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		32CA3C944753026B76AE3910 /* AppIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = AppIcon.iconset; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				F43B9BC9683D9FDAC10D37E2 /* LocalTranscription.swift */,
 				7D45BACF15FCBEF30FE0F908 /* PermissionsAndHotkey.swift */,
 				480E76BEE4900D0A846118CF /* SarvamTranscription.swift */,
+				0992E044A8FFFEE2DD045271 /* VaaniBetaTranscription.swift */,
 				506A213B3BB97F961846B018 /* Views.swift */,
 			);
 			name = GujType;
@@ -172,6 +175,7 @@
 				8D469652AC61D4BBD5390556 /* LocalTranscription.swift in Sources */,
 				829B3397E3E20C1B3A91ADFB /* PermissionsAndHotkey.swift in Sources */,
 				65DE87A564F6240AC31AE491 /* SarvamTranscription.swift in Sources */,
+				420957146C7CAC7E4E70E84B /* VaaniBetaTranscription.swift in Sources */,
 				F9085B482787EB709308AAB0 /* Views.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
