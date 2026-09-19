@@ -166,6 +166,14 @@ final class AppState: ObservableObject {
             dictationSessionID = UUID()
             let sessionID = dictationSessionID
             dictationError = nil
+            let captureFailure: (String) -> Void = { [weak self] message in
+                Task { @MainActor in
+                    guard let self, self.dictationSessionID == sessionID else { return }
+                    self.dictationError = message
+                    self.status = message
+                    await self.stopAndTranscribe()
+                }
+            }
             recordingOutputMode = outputMode
             // Whisper runs only after release, so it has no partial text to display. Always
             // clear the previous session first; the overlay will correctly say Listening…
@@ -186,9 +194,9 @@ final class AppState: ObservableObject {
                 })
                 try streamer.start(outputMode: outputMode, endpoint: betaAPIEndpoint)
                 liveStreamer = streamer
-                try recorder.start { [weak streamer] chunk in streamer?.send(chunk) }
+                try recorder.start(onPCMChunk: { [weak streamer] chunk in streamer?.send(chunk) }, onError: captureFailure)
             } else {
-                try recorder.start()
+                try recorder.start(onError: captureFailure)
             }
             isRecording = true
             isProcessing = false
